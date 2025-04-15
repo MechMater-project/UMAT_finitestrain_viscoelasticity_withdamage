@@ -727,7 +727,7 @@
               KMAT(N_B,I,J) = IDT2(I,J)
      1                   + DTIME * 
      2		           ((ONE/(TWO*ETADEV(N_B)))*DPVDEVTAUDEPSe(N_B,I,J) 
-     2                    - (ONE/(THREE*ETAVOL(N_B))*DPVHYDTAUDEPSe(N_B))) 
+     2                    + (ONE/(THREE*ETAVOL(N_B))*DPVHYDTAUDEPSe(N_B))) 
             END DO
           END DO
 !         - Calculating KINV
