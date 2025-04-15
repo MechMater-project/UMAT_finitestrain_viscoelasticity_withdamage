@@ -409,7 +409,7 @@
 !     STEP 0 - DEFINING THE NUMBER OF MAXWELL VISCOELASTIC BRANCHES
 ! ---------------------------------------------------------------------
 ! 
-      N_BRANCHES = (NSTATV - FOUR) / SIX
+      N_BRANCHES = (NSTATV - FOUR) / 7.0D0
 ! 
 ! ---------------------------------------------------------------------
 !     STEP 1 - COMPUTING NECESSARY VARIABLES AND CONSTANTS
