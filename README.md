@@ -8,4 +8,4 @@ The constitutive equations as the damage parameters are detailed in [2.	F. Gouhi
 
 The HowtoUse_UMAT.pdf file shows several validation cases and explains how to modify the UMAT according to the strain energy of interest.
 
-Several input files are provided for testing on a 1 element cube or on a pokerchip structure.
+Several input files are provided for testing on a 1 element cube or on structure rectangular bar for torsion (DMAtorsion). Note that for the latest test, DMAtorsionS.inp and DMAtrosionR.inp allows comparing the result between Simo's model directly implemented in Abaqus and Govindjee and Reese's model implemented here.
