@@ -1,0 +1,137 @@
+***********************************
+** lancer en ligne de commande avec
+** c:\abaqus\commands\abaqus job=DMAtorsion cpus=2
+************************************
+*HEADING
+Torsion cyclique eprouvette 3D
+************************************
+*PARAMETER
+# largeur de l'eprouvette (m)
+larg=0.02
+# hauteur de l'eprouvette (m)
+haut=0.1
+# epaisseur de l'eprouvette (m)
+epais=0.004
+# nb (pair) d'elements en largeur
+el_larg=20
+# nb (pair) d'elements en epaisseur
+el_epais=10
+# nb d'elements en hauteur
+el_haut=100
+#temperature
+temp=50.
+# frequence (en Hz)
+freq=10.       
+#angle de rotation (degres)
+ang_deg=180.
+# nb de cycles
+nc=3
+************************************
+omega=2.*3.14159*freq
+time=nc/freq
+dtime=time/nc/400.
+dtmin=dtime/400.
+dtmax=time/nc/200.
+output=0.25/freq/20.
+maps=0.25/freq/4.
+************************************
+larg_plus=larg/2.
+larg_moins=-larg/2.
+epais_plus=epais/2.
+epais_moins=-epais/2.
+ang_rad=ang_deg*3.1416/180.
+# noeuds face du bas
+N2=1+el_larg
+N3=1+N2*el_epais
+N4=N3+el_larg
+# noeud face du haut
+N5=1+el_haut*N4
+N6=N2+el_haut*N4
+N7=N3+el_haut*N4
+N8=N4+el_haut*N4
+# noeud auxiliaire sur l'axe
+N_aux=1+N8
+z_haut=haut+epais
+# noeuds premier element
+C3=N2+2
+C4=N2+1
+C5=N4+1
+C6=N4+2
+C7=C5+el_larg+2
+C8=C5+el_larg+1
+# inc numero d'elements en hauteur
+inc_el=el_larg*el_epais
+************************************
+*NODE
+1,<epais_plus>,<larg_moins>,0.
+<N2>,<epais_plus>,<larg_plus>,0.
+<N3>,<epais_moins>,<larg_moins>,0.
+<N4>,<epais_moins>,<larg_plus>,0.
+<N5>,<epais_plus>,<larg_moins>,<haut>
+<N6>,<epais_plus>,<larg_plus>,<haut>
+<N7>,<epais_moins>,<larg_moins>,<haut>
+<N8>,<epais_moins>,<larg_plus>,<haut>
+*NGEN,NSET=BAS1
+1,<N2>
+*NGEN,NSET=BAS2
+<N3>,<N4>
+*NFILL,NSET=BAS
+BAS1,BAS2,<el_epais>,<N2>
+*NGEN,NSET=HAUT1
+<N5>,<N6>
+*NGEN,NSET=HAUT2
+<N7>,<N8>
+*NFILL,NSET=HAUT
+HAUT1,HAUT2,<el_epais>,<N2>
+*NFILL
+BAS,HAUT,<el_haut>,<N4>
+*NODE,NSET=AXE
+<N_aux>,0.,0.,<z_haut>
+*NSET,NSET=ALLN,GENERATE
+1,<N8>
+*ELEMENT,TYPE=C3D8H
+1,1,2,<C3>,<C4>,<C5>,<C6>,<C7>,<C8>
+*ELGEN,ELSET=EPROU
+1,<el_larg>,1,1,<el_epais>,<N2>,<el_larg>,<el_haut>,<N4>,<inc_el>
+*MATERIAL,NAME=POLYM
+*Depvar
+88,
+*User material, constants=60, HYBRID FORMULATION = TOTAL
+5.0E+01,1.0172592E+01,4.7350450E+01,,0,0.0,0.0,0.,0.0,
+0.,1.,1.0,2331.8,9.3590E+01,0.0,2.84E-03,100.0,
+1.1138E+02,0.0,1.92E-02,100,1.2842E+02,0.0,1.25E-01,100,
+1.1258E+02,0.0,6.24E-01,100,4.3137E+01,0.0,1.36E+00,100,
+7.2204E+00,0.0,1.29E+00,100,1.4356E+00,0.0,1.46E+00,100,
+5.1567E-01,0.0,2.97E+00,100,2.5494E-01,0.0,8.33E+00,100,
+1.1158E-01,0.0,2.07E+01,100,3.2064E-02,0.0,3.38E+01,100,
+8.0199E-03,0.0,4.79E+01,100,
+*DENSITY
+1.21E3
+*EXPANSION
+1.5E-4 
+*SOLID SECTION,ELSET=EPROU,MATERIAL=POLYM
+*KINEMATIC COUPLING,REF NODE=AXE
+HAUT
+*INITIAL CONDITIONS,TYPE=TEMPERATURE
+ALLN,<temp>
+*AMPLITUDE,NAME=SINUS,DEFINITION=PERIODIC
+1,<omega>,0.,0.
+0.,1.
+**********
+*STEP,NLGEOM,INC=10000
+*STATIC, STABILIZE=1E-4
+<dtime>,<time>,<dtmin>,<dtmax>
+*BOUNDARY
+BAS,ENCASTRE
+AXE,1,5
+*BOUNDARY,AMPLITUDE=SINUS
+AXE,6,6,<ang_rad>
+*OUTPUT,FIELD,TIME INTERVAL=<maps>
+*NODE OUTPUT
+U
+*ELEMENT OUTPUT
+S,E
+*OUTPUT,HISTORY,TIME INTERVAL=<output>
+*NODE OUTPUT,NSET=AXE
+RM3,UR3,RF3
+*END STEP
