@@ -410,7 +410,7 @@
       TEMPREF     = PROPS(1)
       CWLF1       = PROPS(2)
       CWLF2       = PROPS(3)
-      LOGaT       = (CWLF1*(TEMP - TEMPREF))/(CWLF2 + (TEMP - TEMPREF))
+      LOGaT       = (CWLF1*(TEMPREF - TEMP))/(CWLF2 + (TEMP - TEMPREF))
 ! 
 !     ASSIGN PARAMETERS OF THE DAMAGE EXPONENTIAL LAW
       DAMCHOICE   = PROPS(4)
