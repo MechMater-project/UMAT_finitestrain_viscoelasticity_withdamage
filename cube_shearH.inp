@@ -53,7 +53,7 @@
 *Depvar
      11,
 *User Material, constants=16, HYBRID FORMULATION = TOTAL 
-20,-6.5,166., 0,0.0,0.0,0.,0.0,
+20,6.5,166., 0,0.0,0.0,0.,0.0,
 0.,1.,0.5,1000.0,0.5,1000.0, 1.0E1, 1.0E1,
 ** Eight parameters per lines
 ** Tref, C1, C2
